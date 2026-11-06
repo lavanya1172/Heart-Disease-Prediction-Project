@@ -1,0 +1,55 @@
+<!-- Your existing homepage content -->
+
+<hr>
+<h2>Chatbot</h2>
+<div id="chatbox"></div>
+<input type="text" id="message" placeholder="Type your message..." />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    function appendMessage(sender, text) {
+        const chatbox = document.getElementById("chatbox");
+        const div = document.createElement("div"); 
+        div.className = sender;
+        div.innerHTML = `<b>${sender === "user" ? "You" : "Bot"}:</b> ${text}`;
+        chatbox.appendChild(div);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function sendMessage() {
+        const messageInput = document.getElementById("message");
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        appendMessage("user", message);
+        messageInput.value = "";
+
+        fetch("/chatbot/get_response/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: "message=" + encodeURIComponent(message)
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendMessage("bot", data.reply);
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
