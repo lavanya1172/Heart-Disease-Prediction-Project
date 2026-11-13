@@ -40,3 +40,11 @@ The system analyzes various health parameters such as age, blood pressure, chole
 This project is developed for educational purposes and is not a substitute for professional medical diagnosis.
 
 
+## Excel Project - Sales Dashboard
+
+Interactive Excel Dashboard created using Pivot Tables and Slicers.
+- Region-wise, Product-wise and Category-wise Sales Analysis
+- 3 Interactive Charts with Slicers for filtering
+- File: excel project.xlsx
+
+
